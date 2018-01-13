@@ -1,0 +1,79 @@
+<html>
+
+<head>
+
+        <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <h1>
+        <%= title %>
+    </h1>
+    <a href='/book/add'>add Book</a>
+
+    <table class="table table-striped">
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>info</th>
+            <th>delete</th>
+            <th>update</th>
+        </tr>
+        <% booksData.forEach(function(book){  %>
+            <tr>
+                <td>
+                    <%= book.name %>
+                </td>
+                <td>
+                    <%= book.price %>
+                </td>
+                <td>
+                    <button onclick="getBookData('<%= book.id %>')" class="btn btn-info">info</button>
+                </td>
+                <td>
+                    <button onclick="deleteBook('<%= book.id %>')" class="btn btn-danger">Delete</button>
+                </td>
+
+                <td>
+                    <a href="/book/edit/<%= book.id %>" class="btn btn-primary">update</a>
+                </td>
+            </tr>
+            <% }); %>
+    </table>
+
+    <ul id='info'>
+            
+    </ul>
+    <script>
+        function getBookData(bookId){
+            $.ajax({
+                url:'/book/'+bookId,
+                method:'Get'
+            }).done(function(data){
+                $('#info').empty();
+                $('#info').append('<li>'+data.name+'</li>');
+                $('#info').append('<li>'+data.title+'</li>');
+                $('#info').append('<li>'+data.price+'</li>');
+            });
+        }
+
+        function deleteBook(bookId){
+            console.log(bookId);
+            $.ajax({
+                url:'/book/'+bookId,
+                method:'delete'
+            }).done(function(data){
+                location.reload();
+            });
+        }
+    </script>
+</body>
+
+</html>
